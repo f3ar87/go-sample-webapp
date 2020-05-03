@@ -6,33 +6,12 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/f3ar87/go-sample-webapp/viewmodel"
+	"github.com/f3ar87/go-sample-webapp/controllers"
 )
 
 func main() {
 	templates := populateTemplates()
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		requestedFile := r.URL.Path[1:]
-		template := templates[requestedFile+".html"]
-		var context interface{}
-		switch requestedFile {
-		case "shop":
-			context = viewmodel.NewShop()
-		case "home":
-			context = viewmodel.NewHome()
-		case "stand_locator":
-			context = viewmodel.NewStandLocator()
-		default:
-			context = viewmodel.NewBase()
-		}
-		if template != nil {
-			template.Execute(w, context)
-		} else {
-			w.WriteHeader(404)
-		}
-	})
-	http.Handle("/img/", http.FileServer(http.Dir("public")))
-	http.Handle("/css/", http.FileServer(http.Dir("public")))
+	controllers.Startup(templates)
 	http.ListenAndServe(":8000", nil)
 }
 
