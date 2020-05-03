@@ -33,7 +33,6 @@ func NewShop(categories []model.Category) Shop {
 		vm := categorytoVM(categories[i])
 		vm.IsOrientRight = i%2 == 1
 		result.Categories[i] = vm
-		println(vm.URL)
 	}
 	return result
 }
